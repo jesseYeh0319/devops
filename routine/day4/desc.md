@@ -1,22 +1,27 @@
-📌 Day 4：設定 crontab 定時執行 log 清理器
+**📌 Day 4：設定 crontab 定時執行 log 清理器**
+
 🎯 今日目標
-將 cleanup_logs.sh 腳本加入 crontab 排程
 
-熟悉 cron 的時間格式與編輯方式
+1.將 cleanup_logs.sh 腳本加入 crontab 排程
 
-用 nano 編輯器學會基本操作（進入、刪除、儲存）
+2.熟悉 cron 的時間格式與編輯方式
+
+3.用 nano 編輯器學會基本操作（進入、刪除、儲存）
 
 🛠 實作內容
 
 🗓 編輯排程：
-``bash
-crontab -e
 
+```bash
+crontab -e
+```
 
 ✍ 加入以下排程設定：
-``bash
-# 每天凌晨 2 點執行 log 清理器，保留 7 天
+
+```bash
+#每天凌晨 2 點執行 log 清理器，保留 7 天
 0 2 * * * /opt/java-app/cleanup_logs.sh >> /opt/java-app/logs/cleanup.log 2>&1
+```
 
 📌 crontab 時間欄位：
 | 欄位 | 意義 | 範例 |
@@ -40,10 +45,14 @@ crontab -e
 可先將時間設為 * * * * *（每分鐘執行）觀察測試效果
 
 查看排程是否執行：
-``bash
-tail -f /opt/java-app/logs/cleanup.log
 
-🧠 心得摘要
-這一天學會使用 crontab 讓腳本自動執行，並了解 cron 的格式結構。
-同時熟悉 nano 編輯器基本用法，未來能快速進行部署排程、設定調整或緊急修補。
+```bash
+tail -f /opt/java-app/logs/cleanup.log
+```
+
+## 🧠 心得摘要
+
+> 這一天學會使用 crontab 讓腳本自動執行，並了解 cron 的格式結構。  
+> 同時熟悉 nano 編輯器基本用法，未來能快速進行部署排程、設定調整或緊急修補。
+
 
