@@ -27,6 +27,37 @@ docker run -d \
   -v /var/run/docker.sock:/var/run/docker.sock \
   jenkins/jenkins:lts
 ```
+上面可能會有錯誤
+
+🔁 可選：將 Jenkins Image 預先打包為支援 Docker 的版本
+如果你不想每次都手動裝，可以自己做一個 Dockerfile：
+
+```Dockerfile：
+FROM jenkins/jenkins:lts
+USER root
+RUN apt update && apt install -y docker.io
+```
+
+然後 build：
+
+```bash
+docker build -t jenkins-with-docker .
+```
+
+再啟動 Jenkins 時改用這個 image：
+
+```bash
+docker run -d \
+  --name jenkins \
+  -u root \
+  -p 8080:8080 \
+  -v jenkins_home:/var/jenkins_home \
+  -v /var/run/docker.sock:/var/run/docker.sock \
+  jenkins-with-docker
+```
+
+---
+
 
 ---
 
