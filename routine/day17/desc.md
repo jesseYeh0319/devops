@@ -78,3 +78,12 @@ docker push $DOCKER_USERNAME/petclinic
 - [ ] Jenkins 可自動登入 Docker Hub 並推送映像檔
 - [ ] 成功於 Docker Hub 上看到新版本映像檔
 
+---
+## 實際遇到的坑
+
+因為中間有改動Git Repository URL，但不知何種原因，
+Jenkins一直抓到舊的URL，所以最保險的方法是刪掉整個workspace，
+勾選Environment=>Delete workspace before build starts
+---
+
+
