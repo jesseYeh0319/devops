@@ -65,6 +65,18 @@ docker push $DOCKER_USERNAME/petclinic
 
 ---
 
+## 🪤 實際遇到的坑：Jenkins 抓錯 Git Repository URL
+問題描述：
+在 Jenkins 設定中曾修改過 Git Repository 的 URL，但系統仍然持續使用舊的 URL。
+
+原因分析：
+Jenkins 的 workspace 仍保留著 .git/config 的舊遠端設定。
+
+解法：
+勾選 Job 的 Build Environment → Delete workspace before build starts
+可保證每次建置使用乾淨的專案環境。
+
+---
 ## 🧠 補充說明
 
 - `docker build -t yourname/image` 中的 `yourname` 必須為 Docker Hub 帳號，否則會無權限推送。
@@ -78,12 +90,6 @@ docker push $DOCKER_USERNAME/petclinic
 - [ ] Jenkins 可自動登入 Docker Hub 並推送映像檔
 - [ ] 成功於 Docker Hub 上看到新版本映像檔
 
----
-## 實際遇到的坑
-
-因為中間有改動Git Repository URL，但不知何種原因，
-Jenkins一直抓到舊的URL，所以最保險的方法是刪掉整個workspace，
-勾選Environment=>Delete workspace before build starts
 ---
 
 
