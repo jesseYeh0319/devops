@@ -56,7 +56,7 @@ mvn clean package
 ls -lh target/*.jar
 
 # 建立 Docker 映像檔
-docker build -t $DOCKER_USERNAME/petclinic .
+docker build --no-cache -t yehweiyang/petclinic:latest .
 
 # 登入 Docker Hub 並推送映像檔
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
