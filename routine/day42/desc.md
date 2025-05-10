@@ -113,4 +113,3 @@ COPY . .
 - [Docker 官方最佳實踐](https://docs.docker.com/develop/develop-images/dockerfile_best-practices/)
 - [Slim.AI 映像體積分析工具](https://www.slim.ai/)
 
-
