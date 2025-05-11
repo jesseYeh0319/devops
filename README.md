@@ -142,3 +142,72 @@ https://github.com/jesseYeh0319/devops/tree/main/routine/day5
 
 > 🎯 你目前已具備：完整 Docker 專案骨架、環境分離設計、精簡映像打包、自動化部署流程雛型
 > 🔜 可接續進入 GitHub Actions / Jenkins / 部署自動化等主題
+
+
+---
+
+
+# 🧠 DevOps140｜Day 46～Day 50 統整心得
+
+## 🔒 Day 46：設定 Healthcheck 確保容器穩定性
+
+- ✅ 使用 `healthcheck` 對 Spring Boot 容器設計 `/actuator/health` 探針
+- ✅ 了解 Healthcheck 失敗不等於容器異常退出（不會觸發 restart policy）
+- ⚠️ 踩坑：`/actuator/health` 回傳 404、應用尚未啟動時容器變成 running (unhealthy)
+- 🔧 解法：搭配上層監控工具或 service orchestration 實作容器替換策略
+
+---
+
+## ⚠️ Day 47：容器啟動失敗排查與自動重啟策略
+
+- ✅ 熟悉 `restart: no`、`on-failure[:N]`、`always` 策略用途與差異
+- ✅ 用 `docker logs`、`docker inspect <id> --format='{{.State.ExitCode}}'` 排查啟動失敗原因
+- 🔥 踩雷：Zombie container 導致 `docker stop` / `rm -f` 無效
+- 🧠 知識補充：
+  - AppArmor 殘留會導致 permission denied
+  - `sudo aa-remove-unknown` 可清除未知 profile
+  - 重啟主機為保險作法以清空 daemon namespace
+
+---
+
+## 🌐 Day 48：整合 NGINX / Traefik 實作反向代理
+
+- ✅ 使用 NGINX `proxy_pass` 將 `/` 導向 Spring Boot 容器內部 port
+- ⚠️ 踩坑：使用 bind mount 掛載 `default.conf`（來自 VirtualBox 共享目錄）導致容器無法停止
+- ✅ 解法：改用 Dockerfile 中 `COPY` 打包設定檔 → 啟動穩定
+- ✅ 瞭解 Traefik 能自動偵測 container 並註冊路由，未來可實作無設定化 Gateway
+- 💡 體悟：反向代理不要依賴主機路徑 bind mount，否則極易卡死
+
+---
+
+## 🛡️ Day 49：強化容器安全性（readonly / drop cap）
+
+- ✅ 使用 `read_only: true` 限制容器檔案系統寫入，強化最小操作範圍
+- ✅ 使用 `cap_drop: ALL` 移除預設 Linux kernel 權限（避免提權攻擊）
+- ✅ 有需要時再透過 `cap_add` 加回必要權限（如 CHOWN）
+- 🧠 常見可移除權限：`SYS_ADMIN`、`NET_ADMIN`、`SYS_MODULE`
+- 🗣️ 面試說法：部署容器時，我會使用唯讀與最低權限原則，防止應用程式異常行為影響主機
+
+---
+
+## 📦 Day 50：封裝可攜式 Docker 專案模板
+
+- ✅ 建立標準結構：Dockerfile、docker-compose.yml、Makefile、.env、.env.example、README.md
+- ✅ Makefile 封裝常用指令（up、down、build、logs）
+- ✅ `.env.example` 協助團隊快速複製、並避免敏感資訊誤上傳
+- ✅ 使用多階段 Dockerfile 打包 Spring Boot 可執行 JAR
+- ✅ 專案具備可攜、可複製、可部署的特性，可作為履歷展示用模板
+
+---
+
+## 📌 學習總結
+
+| 類別           | 關鍵詞與重點                     |
+|----------------|----------------------------------|
+| 容器穩定性     | `healthcheck`、unhealthy 排查     |
+| 啟動失敗排查   | `docker logs`、Zombie、AppArmor   |
+| 路由整合       | `proxy_pass`、COPY vs volume     |
+| 安全性設計     | `read_only`、`cap_drop`、least privilege |
+| 專案封裝       | `.env.example`、Makefile、模板化   |
+
+---
