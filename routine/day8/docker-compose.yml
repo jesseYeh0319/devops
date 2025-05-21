@@ -1,0 +1,10 @@
+version: "3.9"
+services:
+  log-cleaner:
+    build: .
+    container_name: log-cleaner
+    volumes:
+      - ./logs:/opt/java-app/logs
+    env_file:
+      - .env
+    restart: "no"
